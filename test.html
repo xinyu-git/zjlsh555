@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>战舰猎手</title>
+    <meta name="screen-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-page-mode" content="app">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/com.css"/>
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<script src="js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="js/rem.js"></script>
+</head>
+<body>
+<!--背景音乐-->
+<div class="audiobg"  data-type="audio">
+	<audio preload="preload" loop autoplay="autoplay"  id="audiobg"  src="media/videobg.mp3">
+		<source src="media/videobg.mp3" type="audio/mpeg">
+	</audio>
+</div>
+<!-- 视频 -->
+			<div class="videoWrap" id="videoWrap">
+				<div class="videoBox"> 
+ 					<video id="h5video" class="h5video" width="100%" height="100%" webkit-playsinline="true"   playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" preload="preload" poster="" src="media/h5video.mp4" >
+ 						<source src="media/h5video.mp4" type="video/mp4">
+ 					</video>
+				</div>
+			</div>
+
+<script src="js/imgloader.js" type="text/javascript" charset="utf-8"></script>
+<!-- <script type="text/javascript" src="js/index.js"></script> -->
+<script type="text/javascript" src="js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="js/gesture.min.js"></script>
+<script type="text/javascript" src="js/log.js"></script>
+<script type="text/javascript" src="js/video.js"></script>
+<script type="text/javascript">
+	audioAutoPlay('audiobg') //背景音乐
+	var clientH=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	$('.loadingWrap').css({'height':clientH});
+	$("html,body").stop(true,true).animate({scrollTop:0},1000);
+	imgLoader(["images/item1.png", "images/item2.png", "images/item3.png",   "images/item4.png", "images/item5.png","images/plane1.png","images/plane2.png","images/dialog1.png","images/dialog2.png","images/dialog3.png","images/fire.png","images/spray.png","images/dunker.png","images/water_fire.png","images/rudder.png","images/dashboard.png","images/pointer.png","images/fish.png","images/blow.png"], function (percentage) {
+    	var percentT = percentage * 100;
+    	$('.loadInfo').html('Loading ' + (parseInt(percentT)) + '%');
+    	if (percentage == 1) {
+        	$('#loadPage').remove();
+	        $('.wrap-slide').show();
+	        $('#pageImg1').addClass('pageImgAni');  //第一个格子亮
+	        $('#plane1').addClass('plane1Ani');
+	        videoPlay('h5video'); 
+	        //audioPlay('plane1_audio');  //飞机1声音
+    	}
+	});
+
+	function audioAutoPlay(id){  
+	var audio = document.getElementById(id) 
+	var play = function(){  
+	        audio.play();  
+	        document.removeEventListener("touchstart",play, false);  
+	    };  
+	audio.play();  
+	document.addEventListener("WeixinJSBridgeReady", function () {  
+	    play();  
+	}, false);  
+	document.addEventListener('YixinJSBridgeReady', function() {  
+	    play();  
+	}, false);  
+	document.addEventListener("touchstart",play, false);  
+}
+function audioPlay(id){
+	var audio = document.getElementById(id);
+	audio.addEventListener("loadedmetadata",function(){
+   	 	audio.play();
+	});
+	audio.play(); 
+	document.addEventListener("WeixinJSBridgeReady", function () {  
+	   audio.play(); 
+	}, false);  
+}
+//可以在这个事件触发后播放一次然后暂停（这样以后视频会处于加载状态，为后面的流畅播放做准备）
+function videoPlay(id){
+	var video=document.getElementById(id);
+	video.play();
+	document.addEventListener("WeixinJSBridgeReady", function (){ 
+   	 	video.play();
+	}, false)
+}
+	</script>
+
+</body>
+</html>
